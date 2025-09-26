@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listo AI – The Reseller's Secret Weapon</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F5F5F5;
+      color: #2E2A68;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    header {
+      padding: 1rem;
+      text-align: center;
+    }
+    h1 { margin: 0; font-size: 1.8rem; }
+    p.tagline { color: #5CE1B6; margin-top: .4rem; }
+    
+    .upload-box {
+      margin: 2rem;
+      border: 2px dashed #2E2A68;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background: white;
+      cursor: pointer;
+      max-width: 90%;
+    }
+    .upload-box.dragover { background: #E8EBFF; }
+    
+    progress {
+      width: 90%;
+      height: 12px;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    
+    .results {
+      margin: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #fff;
+      max-width: 600px;
+    }
+    
+    .listo-btn {
+      background: #2E2A68;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem;
+      width: 90%;
+      margin: 1rem auto;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    
+    footer {
+      font-size: .8rem;
+      margin: 2rem;
+      color: #888;
+    }
+    @media(min-width:768px){
+      h1{ font-size:2.4rem }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Listo AI</h1>
+    <p class="tagline">The Reseller's Secret Weapon</p>
+  </header>
+
+  <div class="upload-box" id="uploadBox">
+    <p>📸 Tap or drag a photo here to upload</p>
+    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+  </div>
+
+  <progress id="progressBar" value="0" max="100" style="display:none;"></progress>
+
+  <div class="results" id="results" style="display:none;">
+    <h2>✨ Listing Generated</h2>
+    <p><b>Title:</b> Vintage Nike Hoodie – Black (M)</p>
+    <p><b>Description:</b> Classic Nike pullover hoodie in black, size Medium. Good condition with slight wear. Perfect everyday fit. Open to offers.</p>
+    <p><b>Condition:</b> Very Good</p>
+    <p><b>Price Suggestion:</b> Quick Sale £22, Fair Market £28, Max Profit £35</p>
+    <button class="listo-btn" onclick="copyListing()">📋 Copy Listing</button>
+  </div>
+  
+  <button class="listo-btn" id="adminBtn">Admin Dashboard</button>
+
+  <footer>© 2025 Listo AI</footer>
+
+  <script>
+    const uploadBox = document.getElementById("uploadBox");
+    const fileInput = document.getElementById("fileInput");
+    const progressBar = document.getElementById("progressBar");
+    const results = document.getElementById("results");
+
+    uploadBox.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", handleFile);
+    uploadBox.addEventListener("dragover", e => {
+      e.preventDefault();
+      uploadBox.classList.add("dragover");
+    });
+    uploadBox.addEventListener("dragleave", () => uploadBox.classList.remove("dragover"));
+    uploadBox.addEventListener("drop", e => {
+      e.preventDefault();
+      uploadBox.classList.remove("dragover");
+      if(e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        handleFile();
+      }
+    });
+
+    function handleFile(){
+      if(!fileInput.files.length) return;
+      simulateAI();
+    }
+
+    function simulateAI(){
+      progressBar.style.display = "block";
+      let p = 0;
+      progressBar.value = 0;
+      const interval = setInterval(() => {
+        p += 10;
+        progressBar.value = p;
+        if(p >= 100){
+          clearInterval(interval);
+          setTimeout(() => {
+            progressBar.style.display = "none";
+            results.style.display = "block";
+          }, 500);
+        }
+      }, 300);
+    }
+
+    function copyListing(){
+      const listing = `Vintage Nike Hoodie – Black (M)
+
+Classic Nike pullover hoodie in black, size Medium. Good condition with slight wear. Perfect everyday fit. Open to offers.
+
+Condition: Very Good
+Price: Quick Sale £22, Fair Market £28, Max Profit £35`;
+      
+      navigator.clipboard.writeText(listing).then(() => {
+        alert("✅ Listing copied to clipboard!");
+      });
+    }
+
+    document.getElementById("adminBtn").addEventListener("click", () => {
+      let email = prompt("Enter admin email to continue:");
+      if(email === "admin@listo.ai"){
+        alert("✅ Welcome Admin! Dashboard coming soon...");
+      } else {
+        alert("❌ Access Denied");
+      }
+    });
+  </script>
+</body>
+</html>
